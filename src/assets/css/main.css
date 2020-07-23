@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Bevan&family=Open+Sans&display=swap');
+
+:root {
+	--big: 'Bevan', cursive;
+	--normal: 'Open Sans', sans-serif;;
+}
+
+body {
+	font-family: var(--normal);
+    background-color: #CF6C58; 
+}
