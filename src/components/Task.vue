@@ -1,13 +1,13 @@
 <template>
 	<div class="task">
-		{{text}}
+        <span class="task__id">id: {{task.id}}</span>
+        <span class="task__text">{{task.text}}</span>
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'task',
-	props: ['text']
+	props: ['task']
 }
 </script>
 
@@ -23,5 +23,12 @@ export default {
 }
 .task:first-child {
     margin-top: 0;
+}
+.task__id {
+    color: grey;
+    font-size: 14px;
+}
+.task__text {
+    margin-left: 10px;
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
     <div id="app" class="catodo" @keyup="keyUp" @keydown="keyDown" tabindex="0" ref="app">
-        <div class="catodo__info">Ctrl+i for instructions</div>
         <h1 class="catodo__title">
             catodo 😺 <span class="catodo__sub">A mouseless todo list</span>
         </h1>
@@ -10,21 +9,24 @@
                 No tasks yet 🤷🏻‍♀️ 
                 To create a new task hit <span class="catodo__code">Ctrl+n</span>
             </div>
-            <Task v-else v-for="task in tasks" :text="task.text" :key="task.text"/>
+            <Task v-else v-for="task in tasks" :task="task" :key="task.text"/>
         </div>
         <Instructions :visible="instructions.visible"/>
+        <DeleteTask :visible="deleteTask.visible" ref="deleteTask" @update="update()"/>
+        <div class="catodo__info">Ctrl+i for instructions</div>
     </div>
 </template>
 
 <script>
 import {Storage} from '@/storage'
 import Task from '@/components/Task'
+import DeleteTask from '@/components/DeleteTask'
 import NewTask from '@/components/NewTask'
 import Instructions from '@/components/Instructions'
 import {EventBus} from '@/eventBus'
 export default {
     name: 'app',
-    components: {NewTask, Task, Instructions},
+    components: {DeleteTask, NewTask, Task, Instructions},
     data() {
         return {
             tasks: [],
@@ -33,6 +35,9 @@ export default {
                 visible: false
             },
             newTask: {
+                visible: false
+            },
+            deleteTask: {
                 visible: false
             }
         }
@@ -55,6 +60,7 @@ export default {
             if (this.ctrlPressed && event.keyCode === 78) {
                 this.ctrlPressed = false // avoid double trigger
                 this.newTask.visible = true
+                this.deleteTask.visible = false
                 this.$nextTick(() => { this.$refs.newTask.$refs.new.focus() })
             }
             // Ctrl + i
@@ -73,6 +79,12 @@ export default {
                 EventBus.$emit('save-task')
                 this.$nextTick(() => { this.$refs.app.focus() })
             }
+            // Enter (delete task)
+            if (this.deleteTask.visible && event.keyCode === 13) {
+                this.ctrlPressed = false
+                EventBus.$emit('delete-task')
+                this.$nextTick(() => { this.$refs.app.focus() })
+            }
             // Ctrl + a (new task)
             if (this.ctrlPressed && this.newTask.visible && event.keyCode === 65) {
                 this.ctrlPressed = false
@@ -80,10 +92,32 @@ export default {
                 EventBus.$emit('abort-task')
                 this.$nextTick(() => { this.$refs.app.focus() })
             }
+            // Ctrl + a (delete task)
+            if (this.ctrlPressed && this.deleteTask.visible && event.keyCode === 65) {
+                this.ctrlPressed = false
+                this.deleteTask.visible = false
+                this.$nextTick(() => { this.$refs.app.focus() })
+            }
+            // Ctrl + 0 (zero)
+            if (this.ctrlPressed && event.keyCode === 48) {
+                this.ctrlPressed = false
+                Storage.deleteAllTasks()
+                this.update()   
+            }
+            // Ctrl + d (delete task)
+            if (this.ctrlPressed && event.keyCode === 68 && this.tasks.length > 0) {
+                this.ctrlPressed = false
+                this.newTask.visible = false
+                this.deleteTask.visible = true
+                this.$nextTick(() => { this.$refs.deleteTask.$refs.delete.focus() })
+            }
+
         },
         update() {
             this.newTask.visible = false
+            this.deleteTask.visible = false
             this.tasks = Storage.getTasks()
+            this.$refs.app.focus()
         }
     },
     mounted() {
@@ -95,7 +129,7 @@ export default {
 
 <style>
 .catodo {
-    position: relative;
+    height: 100%;
 }
 .catodo__info {
     position: fixed;
@@ -112,11 +146,11 @@ export default {
 .catodo__title {
     font-family: var(--big);
     text-align: center;
-    margin-top: 100px;
     font-size: 42px;
     color: black;
     font-weight: 700;
     letter-spacing: 1px;
+    padding-top: 100px;
 }
 .catodo__sub {
     color: #222222;
@@ -127,7 +161,7 @@ export default {
     margin-left: 5px;
 }
 .catodo__items {
-    padding: 100px 50px 50px 50px;
+    padding: 50px;
 }
 .catodo__notasks {
     text-align: center;
