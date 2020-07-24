@@ -4,6 +4,9 @@
             catodo 😺 <span class="catodo__sub">A mouseless todo list</span>
         </h1>
         <div class="catodo__items">
+            <div class="catodo__howtodel" v-if="tasks.length > 0">
+                💡 Hit <span class="catodo__code">Ctrl+d</span> to delete a task
+            </div>
             <NewTask :visible="newTask.visible" ref="newTask" @update="update()"/>
             <div class="catodo__notasks" v-if="tasks.length === 0 && !newTask.visible">
                 No tasks yet 🤷🏻‍♀️ 
@@ -173,5 +176,9 @@ export default {
 }
 .catodo__code {
     font-style: italic;
+}
+.catodo__howtodel {
+    text-align: center;
+    margin-bottom: 20px;
 }
 </style>
