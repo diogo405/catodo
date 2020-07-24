@@ -5,7 +5,7 @@
             catodo 😺 <span class="catodo__sub">A mouseless todo list</span>
         </h1>
         <div class="catodo__items">
-            <input v-show="newTask.visible" class="catodo__new" ref="new">
+            <NewTask :visible="newTask.visible" ref="newTask" @update="update()"/>
             <div class="catodo__notasks" v-if="tasks.length === 0 && !newTask.visible">
                 No tasks yet 🤷🏻‍♀️ 
                 To create a new task hit <span class="catodo__code">Ctrl+n</span>
@@ -17,11 +17,14 @@
 </template>
 
 <script>
+import {Storage} from '@/storage'
 import Task from '@/components/Task'
+import NewTask from '@/components/NewTask'
 import Instructions from '@/components/Instructions'
+import {EventBus} from '@/eventBus'
 export default {
     name: 'app',
-    components: {Task, Instructions},
+    components: {NewTask, Task, Instructions},
     data() {
         return {
             tasks: [],
@@ -30,15 +33,13 @@ export default {
                 visible: false
             },
             newTask: {
-                visible: false,
-                text: ''      
+                visible: false
             }
         }
     },
     methods: {
         getTasks() {
-            this.tasks = JSON.parse(sessionStorage.getItem('tasks'))
-            this.tasks = this.tasks || []
+            this.tasks = Storage.getTasks()
         },
         keyDown(event) {
             console.log(event.keyCode)
@@ -50,22 +51,39 @@ export default {
             if (event.keyCode === 17) {
                 this.ctrlPressed = false
             }
-            // Ctrl+ n
+            // Ctrl + n
             if (this.ctrlPressed && event.keyCode === 78) {
                 this.ctrlPressed = false // avoid double trigger
                 this.newTask.visible = true
-                this.$nextTick(() => { this.$refs.new.focus() })
+                this.$nextTick(() => { this.$refs.newTask.$refs.new.focus() })
             }
             // Ctrl + i
             if (this.ctrlPressed && event.keyCode === 73) {
                 this.ctrlPressed = false
                 this.instructions.visible = true
             }
-
+            // Ctrl + x
             if (this.ctrlPressed && event.keyCode === 88) {
                 this.ctrlPressed = false
                 this.instructions.visible = false
             }
+            // Enter (new task)
+            if (this.newTask.visible && event.keyCode === 13) {
+                this.ctrlPressed = false
+                EventBus.$emit('save-task')
+                this.$nextTick(() => { this.$refs.app.focus() })
+            }
+            // Ctrl + a (new task)
+            if (this.ctrlPressed && this.newTask.visible && event.keyCode === 65) {
+                this.ctrlPressed = false
+                this.newTask.visible = false
+                EventBus.$emit('abort-task')
+                this.$nextTick(() => { this.$refs.app.focus() })
+            }
+        },
+        update() {
+            this.newTask.visible = false
+            this.tasks = Storage.getTasks()
         }
     },
     mounted() {
@@ -85,7 +103,7 @@ export default {
     right: 0;
     font-size: 14px;
     color: black;
-    background-color: #A6BDAC;
+    background-color: var(--green);
     padding: 15px;
     border: 3px solid black;
     border-top: none;
@@ -115,20 +133,11 @@ export default {
     text-align: center;
     font-size: 20px;
     color: black;
-    background-color: #E2C8CA;
+    background-color: var(--grey);
     border: 3px solid black;
     padding: 20px;
 }
 .catodo__code {
     font-style: italic;
-}
-.catodo__new {
-    font-size: 20px;
-    color: black;
-    background-color: #E2C8CA;
-    border: 3px solid black;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
 }
 </style>

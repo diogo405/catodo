@@ -9,10 +9,6 @@
 			</div>
 			<div class="cins__item">
 				&bull;
-				<span class="cins__code">Ctrl+i</span> Open this window
-			</div>
-			<div class="cins__item">
-				&bull;
 				<span class="cins__code">Ctrl+n</span> Create a new task
 			</div>
 		</div>

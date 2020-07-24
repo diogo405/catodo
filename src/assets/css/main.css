@@ -2,10 +2,15 @@
 
 :root {
 	--big: 'Bevan', cursive;
-	--normal: 'Open Sans', sans-serif;;
+	--normal: 'Open Sans', sans-serif;
+
+	--orange: #CF6C58;
+	--green: #A6BDAC;
+	--grey: #E2C8CA;
+	--white: #F5F8EE;
 }
 
 body {
 	font-family: var(--normal);
-    background-color: #CF6C58; 
+    background-color: var(--orange); 
 }
