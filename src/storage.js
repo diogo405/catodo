@@ -1,19 +1,38 @@
 class Storage {
 	static saveTask(task) {
 		let tasks = Storage.getTasks()
-		tasks.push({id: Storage.generateTaskId(), text: task.text, status: 'CREATED'})
+		tasks.unshift({id: Storage.generateTaskId(), text: task.text, status: 'CREATED'})
 		localStorage.setItem('tasks', JSON.stringify(tasks))
 	}
 
 	static deleteTask(id) {
 		let tasks = Storage.getTasks()
-		tasks = tasks.filter(t => t.id.toUpperCase() != id.toUpperCase())
+		tasks = tasks.filter(t => t.id.toUpperCase() !== id.toUpperCase())
 		localStorage.setItem('tasks', JSON.stringify(tasks))
 	}
 
 	static getTasks() {
 		let tasks = JSON.parse(localStorage.getItem('tasks'))
-        return tasks.reverse() || []
+        return tasks || []
+	}
+
+	static getTask(id) {
+		let tasks = JSON.parse(localStorage.getItem('tasks'))
+		let task = tasks.find(t => t.id.toUpperCase() === id.toUpperCase())
+		if (!task) console.log(`Cannot find task ${id}`)
+		return task
+	}
+
+	static updateTask(id, status) {
+		let tasks = Storage.getTasks()
+		console.log('tasks before', tasks)
+		tasks.forEach(t => {
+			if (t.id.toUpperCase() === id.toUpperCase()) {
+				t.status = status
+			}
+		})
+		console.log('tasks after', tasks)
+		localStorage.setItem('tasks', JSON.stringify(tasks))
 	}
 
 	static deleteAllTasks() {

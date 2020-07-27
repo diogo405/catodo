@@ -4,8 +4,8 @@
             catodo 😺 <span class="catodo__sub">A mouseless todo list</span>
         </h1>
         <div class="catodo__items">
-            <div class="catodo__howtodel" v-if="tasks.length > 0">
-                💡 Hit <span class="catodo__code">Ctrl+d</span> to delete a task
+            <div class="catodo__howto" v-if="tasks.length > 0">
+                💡 <span class="catodo__code">Ctrl+d</span> to delete a task; <span class="catodo__code">Ctrl+s</span> to mark as done
             </div>
             <NewTask :visible="newTask.visible" ref="newTask" @update="update()"/>
             <div class="catodo__notasks" v-if="tasks.length === 0 && !newTask.visible">
@@ -15,7 +15,18 @@
             <Task v-else v-for="task in tasks" :task="task" :key="task.text"/>
         </div>
         <Instructions :visible="instructions.visible"/>
-        <DeleteTask :visible="deleteTask.visible" ref="deleteTask" @update="update()"/>
+        <TaskPopup 
+            :visible="deleteTask.visible" 
+            label="Enter the task id to be deleted: "
+            ref="deleteTask" 
+            @update="update()"
+        />
+        <TaskPopup 
+            :visible="doneTask.visible" 
+            label="Enter the task id to be marked as done: " 
+            ref="doneTask" 
+            @update="update()"
+        />
         <div class="catodo__info">Ctrl+i for instructions</div>
     </div>
 </template>
@@ -23,13 +34,13 @@
 <script>
 import {Storage} from '@/storage'
 import Task from '@/components/Task'
-import DeleteTask from '@/components/DeleteTask'
+import TaskPopup from '@/components/TaskPopup'
 import NewTask from '@/components/NewTask'
 import Instructions from '@/components/Instructions'
 import {EventBus} from '@/eventBus'
 export default {
     name: 'app',
-    components: {DeleteTask, NewTask, Task, Instructions},
+    components: {TaskPopup, NewTask, Task, Instructions},
     data() {
         return {
             tasks: [],
@@ -41,6 +52,9 @@ export default {
                 visible: false
             },
             deleteTask: {
+                visible: false
+            },
+            doneTask: {
                 visible: false
             }
         }
@@ -59,24 +73,23 @@ export default {
             if (event.keyCode === 17) {
                 this.ctrlPressed = false
             }
-            // Ctrl + n
+            // Ctrl + n (new task)
             if (this.ctrlPressed && event.keyCode === 78) {
                 this.ctrlPressed = false // avoid double trigger
                 this.newTask.visible = true
                 this.deleteTask.visible = false
                 this.$nextTick(() => { this.$refs.newTask.$refs.new.focus() })
             }
-            // Ctrl + i
+            // Ctrl + i (open instructions)
             if (this.ctrlPressed && event.keyCode === 73) {
                 this.ctrlPressed = false
                 this.instructions.visible = true
             }
-            // Ctrl + x
-            if (this.ctrlPressed && event.keyCode === 88) {
-                this.ctrlPressed = false
+            // Esc (close instructions)
+            if (this.instructions.visible && event.keyCode === 27) {
                 this.instructions.visible = false
             }
-            // Enter (new task)
+            // Enter (save new task)
             if (this.newTask.visible && event.keyCode === 13) {
                 this.ctrlPressed = false
                 EventBus.$emit('save-task')
@@ -85,23 +98,32 @@ export default {
             // Enter (delete task)
             if (this.deleteTask.visible && event.keyCode === 13) {
                 this.ctrlPressed = false
-                EventBus.$emit('delete-task')
+                EventBus.$emit('update-task', {action: 'DELETE'})
                 this.$nextTick(() => { this.$refs.app.focus() })
             }
-            // Ctrl + a (new task)
-            if (this.ctrlPressed && this.newTask.visible && event.keyCode === 65) {
+            // Enter (mark as done task)
+            if (this.doneTask.visible && event.keyCode === 13) {
                 this.ctrlPressed = false
+                EventBus.$emit('update-task', {action: 'DONE'})
+                this.$nextTick(() => { this.$refs.app.focus() })
+            }
+            // Esc (abort new task)
+            if (this.newTask.visible && event.keyCode === 27) {
                 this.newTask.visible = false
                 EventBus.$emit('abort-task')
                 this.$nextTick(() => { this.$refs.app.focus() })
             }
-            // Ctrl + a (delete task)
-            if (this.ctrlPressed && this.deleteTask.visible && event.keyCode === 65) {
-                this.ctrlPressed = false
+            // Esc (abort delete task)
+            if (this.deleteTask.visible && event.keyCode === 27) {
                 this.deleteTask.visible = false
                 this.$nextTick(() => { this.$refs.app.focus() })
             }
-            // Ctrl + 0 (zero)
+            // Esc (abort mark as done task)
+            if (this.doneTask.visible && event.keyCode === 27) {
+                this.doneTask.visible = false
+                this.$nextTick(() => { this.$refs.app.focus() })
+            }
+            // Ctrl + 0 (zero - delete all tasks)
             if (this.ctrlPressed && event.keyCode === 48) {
                 this.ctrlPressed = false
                 Storage.deleteAllTasks()
@@ -111,14 +133,24 @@ export default {
             if (this.ctrlPressed && event.keyCode === 68 && this.tasks.length > 0) {
                 this.ctrlPressed = false
                 this.newTask.visible = false
+                this.doneTask.visible = false
                 this.deleteTask.visible = true
-                this.$nextTick(() => { this.$refs.deleteTask.$refs.delete.focus() })
+                this.$nextTick(() => { this.$refs.deleteTask.$refs.input.focus() })
+            }
+            // Ctrl + s (mark as done)
+            if (this.ctrlPressed && event.keyCode === 83 && this.tasks.length > 0) {
+                this.ctrlPressed = false
+                this.newTask.visible = false
+                this.deleteTask.visible = false
+                this.doneTask.visible = true
+                this.$nextTick(() => { this.$refs.doneTask.$refs.input.focus() })
             }
 
         },
         update() {
             this.newTask.visible = false
             this.deleteTask.visible = false
+            this.doneTask.visible = false
             this.tasks = Storage.getTasks()
             this.$refs.app.focus()
         }
@@ -177,8 +209,8 @@ export default {
 .catodo__code {
     font-style: italic;
 }
-.catodo__howtodel {
-    text-align: center;
+.catodo__howto {
     margin-bottom: 20px;
+    font-size: 14px;
 }
 </style>

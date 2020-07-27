@@ -5,7 +5,7 @@
 		<div class="cins__items">
 			<div class="cins__item">
 				&bull;
-				<span class="cins__code">Ctrl+x</span> Close this window
+				<span class="cins__code">Esc</span> Close this window
 			</div>
 			<div class="cins__item">
 				&bull;
@@ -21,7 +21,7 @@
 			</div>
 			<div class="cins__item">
 				&bull;
-				<span class="cins__code">Ctrl+a</span> Abort task creation
+				<span class="cins__code">Esc</span> Abort task creation
 			</div>
 			<div class="cins__item cins__item--section">
 				&bull;
@@ -29,7 +29,7 @@
 			</div>
 			<div class="cins__item">
 				&bull;
-				<span class="cins__code">Ctrl+a</span> Abort task deletion
+				<span class="cins__code">Esc</span> Abort task deletion
 			</div>
 			<div class="cins__item">
 				&bull;

@@ -1,7 +1,7 @@
 <template>
 	<div class="ctips">
 		<span class="ctips__tip">
-			<span class="ctips__code">Ctrl+a</span> abort
+			<span class="ctips__code">Esc</span> abort
 		</span>
 		<span class="ctips__tip ctips__tip--save">
 			<span class="ctips__code">Enter</span> save
