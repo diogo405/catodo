@@ -7,22 +7,22 @@
             <div class="catodo__howto" v-if="tasks.length > 0">
                 💡 <span class="catodo__code">Ctrl+d</span> to delete a task; <span class="catodo__code">Ctrl+s</span> to mark as done
             </div>
-            <NewTask :visible="newTask.visible" ref="newTask" @update="update()"/>
-            <div class="catodo__notasks" v-if="tasks.length === 0 && !newTask.visible">
+            <NewTask :visible="visible.newTaskPopup" ref="newTask" @update="update()"/>
+            <div class="catodo__notasks" v-if="tasks.length === 0 && !visible.newTaskPopup">
                 No tasks yet 🤷🏻‍♀️ 
                 To create a new task hit <span class="catodo__code">Ctrl+n</span>
             </div>
             <Task v-else v-for="task in tasks" :task="task" :key="task.text"/>
         </div>
-        <Instructions :visible="instructions.visible"/>
+        <Instructions :visible="visible.instructions"/>
         <TaskPopup 
-            :visible="deleteTask.visible" 
+            :visible="visible.deleteTaskPopup" 
             label="Enter the task id to be deleted: "
             ref="deleteTask" 
             @update="update()"
         />
         <TaskPopup 
-            :visible="doneTask.visible" 
+            :visible="visible.markAsDonePopup" 
             label="Enter the task id to be marked as done: " 
             ref="doneTask" 
             @update="update()"
@@ -45,17 +45,11 @@ export default {
         return {
             tasks: [],
             ctrlPressed: false,
-            instructions: {
-                visible: false
-            },
-            newTask: {
-                visible: false
-            },
-            deleteTask: {
-                visible: false
-            },
-            doneTask: {
-                visible: false
+            visible: {
+                instructions: false,
+                newTaskPopup: false,
+                deleteTaskPopup: false,
+                markAsDonePopup: false
             }
         }
     },
@@ -73,84 +67,93 @@ export default {
             if (event.keyCode === 17) {
                 this.ctrlPressed = false
             }
+
             // Ctrl + n (new task)
             if (this.ctrlPressed && event.keyCode === 78) {
                 this.ctrlPressed = false // avoid double trigger
-                this.newTask.visible = true
-                this.deleteTask.visible = false
+                this.hidePopups()
+                this.visible.newTaskPopup = true
                 this.$nextTick(() => { this.$refs.newTask.$refs.new.focus() })
             }
+
             // Ctrl + i (open instructions)
             if (this.ctrlPressed && event.keyCode === 73) {
                 this.ctrlPressed = false
-                this.instructions.visible = true
+                this.visible.instructions = true
             }
+
             // Esc (close instructions)
-            if (this.instructions.visible && event.keyCode === 27) {
-                this.instructions.visible = false
+            if (this.visible.instructions && event.keyCode === 27) {
+                this.visible.instructions = false
             }
+
             // Enter (save new task)
-            if (this.newTask.visible && event.keyCode === 13) {
+            if (this.visible.newTaskPopup && event.keyCode === 13) {
                 this.ctrlPressed = false
                 EventBus.$emit('save-task')
-                this.$nextTick(() => { this.$refs.app.focus() })
             }
+
             // Enter (delete task)
-            if (this.deleteTask.visible && event.keyCode === 13) {
+            if (this.visible.deleteTaskPopup && event.keyCode === 13) {
                 this.ctrlPressed = false
                 EventBus.$emit('update-task', {action: 'DELETE'})
-                this.$nextTick(() => { this.$refs.app.focus() })
             }
+
             // Enter (mark as done task)
-            if (this.doneTask.visible && event.keyCode === 13) {
+            if (this.visible.markAsDonePopup && event.keyCode === 13) {
                 this.ctrlPressed = false
                 EventBus.$emit('update-task', {action: 'DONE'})
-                this.$nextTick(() => { this.$refs.app.focus() })
             }
+
             // Esc (abort new task)
-            if (this.newTask.visible && event.keyCode === 27) {
-                this.newTask.visible = false
+            if (this.visible.newTaskPopup && event.keyCode === 27) {
+                this.visible.newTaskPopup = false
                 EventBus.$emit('abort-task')
                 this.$nextTick(() => { this.$refs.app.focus() })
             }
+
             // Esc (abort delete task)
-            if (this.deleteTask.visible && event.keyCode === 27) {
-                this.deleteTask.visible = false
+            if (this.visible.deleteTaskPopup && event.keyCode === 27) {
+                this.visible.deleteTaskPopup = false
                 this.$nextTick(() => { this.$refs.app.focus() })
             }
+
             // Esc (abort mark as done task)
-            if (this.doneTask.visible && event.keyCode === 27) {
-                this.doneTask.visible = false
+            if (this.visible.markAsDonePopup && event.keyCode === 27) {
+                this.visible.markAsDonePopup = false
                 this.$nextTick(() => { this.$refs.app.focus() })
             }
+
             // Ctrl + 0 (zero - delete all tasks)
             if (this.ctrlPressed && event.keyCode === 48) {
                 this.ctrlPressed = false
                 Storage.deleteAllTasks()
                 this.update()   
             }
+
             // Ctrl + d (delete task)
             if (this.ctrlPressed && event.keyCode === 68 && this.tasks.length > 0) {
-                this.ctrlPressed = false
-                this.newTask.visible = false
-                this.doneTask.visible = false
-                this.deleteTask.visible = true
+                this.hidePopups()
+                this.visible.deleteTaskPopup = true
                 this.$nextTick(() => { this.$refs.deleteTask.$refs.input.focus() })
             }
+
             // Ctrl + s (mark as done)
             if (this.ctrlPressed && event.keyCode === 83 && this.tasks.length > 0) {
                 this.ctrlPressed = false
-                this.newTask.visible = false
-                this.deleteTask.visible = false
-                this.doneTask.visible = true
+                this.hidePopups()
+                this.visible.markAsDonePopup = true
                 this.$nextTick(() => { this.$refs.doneTask.$refs.input.focus() })
             }
 
         },
+        hidePopups() {
+            this.visible.newTaskPopup = false
+            this.visible.deleteTaskPopup = false
+            this.visible.markAsDonePopup = false
+        },
         update() {
-            this.newTask.visible = false
-            this.deleteTask.visible = false
-            this.doneTask.visible = false
+            this.hidePopups()
             this.tasks = Storage.getTasks()
             this.$refs.app.focus()
         }
