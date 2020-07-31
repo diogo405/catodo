@@ -19,24 +19,22 @@ class Storage {
 	static getTask(id) {
 		let tasks = JSON.parse(localStorage.getItem('tasks'))
 		let task = tasks.find(t => t.id.toUpperCase() === id.toUpperCase())
+		/* eslint-disable no-console */
 		if (!task) console.log(`Cannot find task ${id}`)
 		return task
 	}
 
 	static updateTask(id, status) {
 		let tasks = Storage.getTasks()
-		console.log('tasks before', tasks)
 		tasks.forEach(t => {
 			if (t.id.toUpperCase() === id.toUpperCase()) {
 				t.status = status
 			}
 		})
-		console.log('tasks after', tasks)
 		localStorage.setItem('tasks', JSON.stringify(tasks))
 	}
 
 	static deleteAllTasks() {
-		let tasks = JSON.parse(localStorage.getItem('tasks'))
 		localStorage.setItem('tasks', '[]')
         return []
 	}

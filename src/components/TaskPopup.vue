@@ -45,7 +45,8 @@ export default {
 				this.$emit('update')
 				return
 			}
-
+			
+			/* eslint-disable no-console */
 			console.error(`Action ${params.action} not set`)
 		}
 	},

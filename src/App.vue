@@ -58,7 +58,7 @@ export default {
             this.tasks = Storage.getTasks()
         },
         keyDown(event) {
-            console.log(event.keyCode)
+            //console.log(event.keyCode)
             if (event.keyCode === 17) {
                 this.ctrlPressed = true
             }
