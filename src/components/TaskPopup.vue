@@ -78,4 +78,14 @@ export default {
 	width: 50px;
 	margin-left: 10px;
 }
+.catodo--dark .dtask {
+	box-shadow: var(--darkShadow);
+}
+.catodo--dark .dtask__cont {
+	background-color: var(--dark);
+}
+.catodo--dark .dtask__input {
+	background-color: var(--dark);
+	color: white;
+}
 </style>

@@ -37,4 +37,11 @@ export default {
 .task--done .task__text {
     text-decoration: line-through;
 }
+.catodo--dark .task {
+    background-color: var(--lightDark);
+    box-shadow: none;
+}
+.catodo--dark .task--done.task {
+    background-color: var(--dark);
+}
 </style>

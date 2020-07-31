@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="catodo" @keyup="keyUp" @keydown="keyDown" tabindex="0" ref="app">
+    <div id="app" :class="['catodo', {'catodo--dark': darkMode}] " @keyup="keyUp" @keydown="keyDown" tabindex="0" ref="app">
         <h1 class="catodo__title">
             catodo 😺 <span class="catodo__sub">A mouseless todo list</span>
         </h1>
@@ -56,7 +56,8 @@ export default {
                 newTaskPopup: false,
                 deleteTaskPopup: false,
                 markAsDonePopup: false
-            }
+            },
+            darkMode: false
         }
     },
     methods: {
@@ -152,6 +153,12 @@ export default {
                 this.$nextTick(() => { this.$refs.doneTask.$refs.input.focus() })
             }
 
+            // Ctrl + m (toggle dark mode)
+            if (this.ctrlPressed && event.keyCode === 77) {
+                this.ctrlPressed = false
+                this.darkMode = !this.darkMode
+            }
+
         },
         hidePopups() {
             this.visible.newTaskPopup = false
@@ -174,6 +181,10 @@ export default {
 <style>
 .catodo {
     height: 100%;
+    font-family: var(--font);
+    background-color: white; 
+    color: var(--dark);
+    transition: background-color 300ms ease-out;
 }
 .catodo__info {
     position: fixed;
@@ -190,7 +201,6 @@ export default {
     padding-top: 70px;
 }
 .catodo__sub {
-    color: #222222;
     font-size: 26px;
     font-weight: 100;
     display: inline-block;
@@ -210,5 +220,10 @@ export default {
 }
 .catodo__howto {
     margin-right: 10px;
+}
+.catodo--dark.catodo {
+    background-color: var(--dark); 
+    color: white;
+    font-weight: 700;
 }
 </style>

@@ -4,20 +4,16 @@
 	--font: 'Roboto', sans-serif;
 
 	--blue: #7365F6;
+    --dark: #333;
+    --lightDark: #444;
 
-	--shadow: -2px 2px 10px 0px lightgrey;
+    --shadow: -2px 2px 10px 0px lightgrey;
+	--darkShadow: -2px 2px 10px 0px darkslategrey;
 	--radius: 15px;
 }
 
 html, body {
 	height: 100%;
-
-}
-
-body {
-	font-family: var(--font);
-    background-color: white; 
-    color: #333;
 }
 
 * {
@@ -38,4 +34,7 @@ body {
 }
 .catodo__command--secondary {
 	background-color: darkgrey;
+}
+.catodo--dark .catodo__command {
+    box-shadow: none;
 }

@@ -51,4 +51,9 @@ export default {
     box-shadow: var(--shadow);
     border: none;
 }
+.catodo--dark .newt__input {
+    background-color: var(--lightDark);
+    box-shadow: none;
+    color: white;
+}
 </style>

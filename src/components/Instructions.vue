@@ -57,6 +57,12 @@
                 </span>
                 Delete all tasks
             </div>
+            <div class="cins__item cins__item--section">
+                <span class="cins__command-cont">
+                    <span class="catodo__command">Ctrl+m</span> 
+                </span>
+                Toggle dark mode
+            </div>
         </div>
     </div>
 </template>
@@ -105,5 +111,9 @@ export default {
 .cins__command-cont {
     display: inline-block;
     min-width: 120px;
+}
+.catodo--dark .cins {
+    background-color: var(--lightDark);
+    box-shadow: var(--darkShadow);
 }
 </style>
