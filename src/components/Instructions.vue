@@ -1,43 +1,61 @@
 <template>
 	<div :class="['cins', {'cins--active': visible}]">
 		<h2 class="cins__title">📝 Instructions</h2>
-		<p class="cins__text">Catodo is a mouseless todo list thus here are the shortcuts for ya:</p>
+		<p class="cins__subtitle">Here are all the commands you need to start managing your todo list.</p>
 		<div class="cins__items">
 			<div class="cins__item">
-				&bull;
-				<span class="cins__code">Esc</span> Close this window
+				<span class="cins__command-cont">
+					<span class="catodo__command">Esc</span>
+				</span>
+				 Close this window
 			</div>
 			<div class="cins__item">
-				&bull;
-				<span class="cins__code">Ctrl+i</span> Open this window
+				<span class="cins__command-cont">
+					<span class="catodo__command">Ctrl+i</span>
+				</span>
+				 Open this window
 			</div>
 			<div class="cins__item cins__item--section">
-				&bull;
-				<span class="cins__code">Ctrl+n</span> Create a new task
+				<span class="cins__command-cont">
+					<span class="catodo__command">Ctrl+n</span>
+				</span>
+				 Create a new task
 			</div>
 			<div class="cins__item">
-				&bull;
-				<span class="cins__code">Enter</span> Save task
+				<span class="cins__command-cont">
+					<span class="catodo__command">Enter</span> 
+				</span>
+				Save task
 			</div>
 			<div class="cins__item">
-				&bull;
-				<span class="cins__code">Esc</span> Abort task creation
+				<span class="cins__command-cont">
+					<span class="catodo__command">Esc</span> 
+				</span>
+				Abort task creation
 			</div>
 			<div class="cins__item cins__item--section">
-				&bull;
-				<span class="cins__code">Ctrl+d</span> Open task deletion popup
+				<span class="cins__command-cont">
+					<span class="catodo__command">Ctrl+d</span> 
+				</span>
+				Open task deletion popup
 			</div>
 			<div class="cins__item">
-				&bull;
-				<span class="cins__code">Esc</span> Abort task deletion
+				<span class="cins__command-cont">
+					<span class="catodo__command">Esc</span> 
+				</span>
+				Abort task deletion
 			</div>
 			<div class="cins__item">
-				&bull;
-				<span class="cins__code">Task id + Enter</span> Delete task
+				<span class="cins__command-cont">
+					<span class="catodo__command catodo__command--small">Task id + Enter</span> 
+				</span>
+				Delete task
 			</div>
 			<div class="cins__item">
-				&bull;
-				<span class="cins__code">Ctrl+0 (zero)</span> Delete all tasks
+				<span class="cins__command-cont">
+					<span class="catodo__command catodo__command--small">Ctrl+0 (zero)</span> 
+				</span>
+				Delete all tasks
 			</div>
 		</div>
 	</div>
@@ -52,43 +70,40 @@ export default {
 <style>
 .cins {
 	padding: 50px;
-	border: 1px solid grey; 
-	background-color: darkgrey;
 	position: absolute;
 	top: 50px;
 	left: 50%;
 	transform: translateX(-50%);
-	border: 3px solid black;
 	display: none;
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	background-color: white;
 }
 .cins--active {
 	display: block;
 }
 .cins__title {
-	font-size: 26px;
-	font-family: var(--big);
+	font-weight: 700;
+	font-size: 22px;
 }
-.cins__text {
+.cins__subtitle {
 	margin-top: 10px;
+	font-size: 14px;
 }
 .cins__items {
-	margin-top: 30px;
+	margin-top: 40px;
 }
 .cins__item {
-	font-size: 16px;
-	margin-top: 10px;	
+	margin-top: 20px;
 }
 .cins__item:first-child {
 	margin-top: 0;
 }
 .cins__item.cins__item--section {
-	margin-top: 25px;
+	margin-top: 40px;
 }
-.cins__code {
-	font-size: 18px;
-	font-style: italic;
-    margin-right: 10px;
-    min-width: 150px;
-    display: inline-block;
+.cins__command-cont {
+	display: inline-block;
+	min-width: 120px;
 }
 </style>

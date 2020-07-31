@@ -43,11 +43,12 @@ export default {
 }
 .newt__input {
     font-size: 20px;
-    color: black;
-    background-color: var(--grey);
-    border: 3px solid black;
+    background-color: white;
     padding: 20px;
     width: 100%;
     box-sizing: border-box;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: none;
 }
 </style>

@@ -14,22 +14,22 @@ export default {
 <style>
 .task {
 	padding: 20px;
-    background-color: var(--lightOrange);
-    border: 3px solid black;
-    border-radius: 2px;
-    margin-top: 5px;
-    color: black;
+    background-color: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-top: 30px;
     font-size: 20px;
 }
 .task--done.task {
-    background-color: var(--green);
+    background-color: whitesmoke;
+    box-shadow: none;
 }
 .task:first-child {
     margin-top: 0;
 }
 .task__id {
-    color: grey;
     font-size: 14px;
+    color: grey;
 }
 .task__text {
     margin-left: 10px;

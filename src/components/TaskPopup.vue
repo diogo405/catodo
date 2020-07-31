@@ -2,7 +2,7 @@
 	<div v-show="visible" class="dtask">
 		<div class="dtask__cont">
 			<label class="dtask__label">{{label}}</label>
-			<input class="dtask__input" ref="input" maxlength="2" v-model.trim="id">
+			<input class="dtask__input" ref="input" maxlength="2" v-model.trim="id" @input="v => {id = id.toUpperCase()}">
 		</div>
 		<CommandTips/>
 	</div>
@@ -59,20 +59,18 @@ export default {
 <style>
 .dtask {
 	position: absolute;
-	top: 0;
-	left: 50%;
-	transform: translateX(-50%);
+	bottom: 20px;
+	right: 20px;
+	box-shadow: var(--shadow);
+	border-radius: var(--radius);
+    padding: 20px;
 }
 .dtask__cont {
-	background-color: var(--grey);
-    color: black;
-    border: 3px solid black;
-    border-top: none;
-    padding: 20px;
+	background-color: white;
     display: flex;
 }
 .dtask__label {
-    font-size: 16px;
+    font-size: 14px;
     align-self: center;
 }
 .dtask__input {

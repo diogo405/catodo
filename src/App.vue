@@ -4,13 +4,17 @@
             catodo 😺 <span class="catodo__sub">A mouseless todo list</span>
         </h1>
         <div class="catodo__items">
-            <div class="catodo__howto" v-if="tasks.length > 0">
-                💡 <span class="catodo__code">Ctrl+d</span> to delete a task; <span class="catodo__code">Ctrl+s</span> to mark as done
+            <div class="catodo__howtos" v-if="tasks.length > 0">
+                <div class="catodo__howto">
+                    <span class="catodo__command catodo__command--small">Ctrl+d</span> to delete a task 
+                </div>
+                <div class="catodo__howto">
+                    <span class="catodo__command catodo__command--small">Ctrl+s</span> to mark as done
+                </div>
             </div>
             <NewTask :visible="visible.newTaskPopup" ref="newTask" @update="update()"/>
             <div class="catodo__notasks" v-if="tasks.length === 0 && !visible.newTaskPopup">
-                No tasks yet 🤷🏻‍♀️ 
-                To create a new task hit <span class="catodo__code">Ctrl+n</span>
+                No tasks yet. To create a task hit <span class="catodo__command">Ctrl+n</span>
             </div>
             <Task v-else v-for="task in tasks" :task="task" :key="task.text"/>
         </div>
@@ -27,7 +31,9 @@
             ref="doneTask" 
             @update="update()"
         />
-        <div class="catodo__info">Ctrl+i for instructions</div>
+        <div class="catodo__info">
+            <span class="catodo__command">Ctrl+i</span> for instructions
+        </div>
     </div>
 </template>
 
@@ -171,49 +177,38 @@ export default {
 }
 .catodo__info {
     position: fixed;
-    top: 0;
-    right: 0;
+    top: 15px;
+    right: 15px;
     font-size: 14px;
-    color: black;
-    background-color: var(--green);
-    padding: 15px;
-    border: 3px solid black;
-    border-top: none;
-    border-right: none;
 }
 .catodo__title {
-    font-family: var(--big);
-    text-align: center;
-    font-size: 42px;
-    color: black;
+    font-family: var(--font);
     font-weight: 700;
+    text-align: center;
+    font-size: 32px;
     letter-spacing: 1px;
-    padding-top: 100px;
+    padding-top: 70px;
 }
 .catodo__sub {
     color: #222222;
-    font-family: var(--normal);
     font-size: 26px;
     font-weight: 100;
     display: inline-block;
     margin-left: 5px;
 }
 .catodo__items {
-    padding: 50px;
+    padding: 100px;
 }
 .catodo__notasks {
     text-align: center;
-    font-size: 20px;
-    color: black;
-    background-color: var(--grey);
-    border: 3px solid black;
-    padding: 20px;
+    font-size: 16px;
 }
-.catodo__code {
-    font-style: italic;
-}
-.catodo__howto {
+.catodo__howtos {
     margin-bottom: 20px;
     font-size: 14px;
+    display: flex;
+}
+.catodo__howto {
+    margin-right: 10px;
 }
 </style>
