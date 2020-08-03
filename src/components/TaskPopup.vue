@@ -1,5 +1,5 @@
 <template>
-	<div v-show="visible" class="dtask">
+	<div :class="['dtask', {'dtask--visible': visible}]">
 		<div class="dtask__cont">
 			<label class="dtask__label">{{label}}</label>
 			<input class="dtask__input" ref="input" maxlength="2" v-model.trim="id" @input="v => {id = id.toUpperCase()}">
@@ -64,6 +64,11 @@ export default {
 	box-shadow: var(--shadow);
 	border-radius: var(--radius);
     padding: 20px;
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+}
+.dtask--visible {
+	opacity: 1;
 }
 .dtask__cont {
 	background-color: white;

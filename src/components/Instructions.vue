@@ -81,11 +81,14 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     display: none;
+    opacity: 0;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     background-color: white;
+    animation: fadeInFromNone 200ms ease-out;
 }
 .cins--active {
+    opacity: 1;
     display: block;
 }
 .cins__title {

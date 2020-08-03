@@ -1,7 +1,7 @@
 <template>
     <div id="app" :class="['catodo', {'catodo--dark': darkMode}] " @keyup="keyUp" @keydown="keyDown" tabindex="0" ref="app">
         <h1 class="catodo__title">
-            catodo 😺 <span class="catodo__sub">A mouseless todo list</span>
+            catodo <span class="catodo__icon">😺</span> <span class="catodo__sub">A mouseless todo list</span>
         </h1>
         <div class="catodo__items">
             <div class="catodo__howtos" v-if="tasks.length > 0">
@@ -206,6 +206,11 @@ export default {
     display: inline-block;
     margin-left: 5px;
 }
+.catodo__icon {
+    animation: moveHead 0.5s ease-out;
+    animation-delay: 2s;
+    display: inline-block;
+}
 .catodo__items {
     padding: 100px;
 }
@@ -225,5 +230,17 @@ export default {
     background-color: var(--dark); 
     color: white;
     font-weight: 700;
+}
+
+@keyframes moveHead {
+    0% {
+        transform: rotate(0);
+    }
+    20% {
+        transform: rotate(40deg);
+    }
+    40% {
+        transform: rotate(0);
+    }
 }
 </style>

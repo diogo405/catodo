@@ -1,5 +1,5 @@
 <template>
-	<div v-show="visible" class="newt">
+	<div :class="['newt', {'newt--visible': visible}]">
 		<input class="newt__input" ref="new" v-model.trim="text">
 		<CommandTips/>
 	</div>
@@ -40,6 +40,13 @@ export default {
 <style>
 .newt {
 	padding-bottom: 10px;
+	opacity: 0;
+	display: none;
+	animation: fadeInFromNone 200ms ease-out;
+}
+.newt--visible {
+	opacity: 1;
+	display: block;
 }
 .newt__input {
     font-size: 20px;

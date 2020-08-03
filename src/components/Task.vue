@@ -19,6 +19,7 @@ export default {
     box-shadow: var(--shadow);
     margin-top: 30px;
     font-size: 20px;
+    transition: all 200ms ease-out;
 }
 .task--done.task {
     background-color: whitesmoke;
