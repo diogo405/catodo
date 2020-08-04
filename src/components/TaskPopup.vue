@@ -93,4 +93,14 @@ export default {
 	background-color: var(--dark);
 	color: white;
 }
+
+@media (max-width: 576px) {
+	.dtask {
+	    padding: 20px 10px;
+	    right: 10px;
+	}
+	.dtask__label {
+	    font-size: 12px;
+	}
+}
 </style>

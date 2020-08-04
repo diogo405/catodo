@@ -44,5 +44,6 @@ export default {
 }
 .catodo--dark .task--done.task {
     background-color: var(--dark);
+    border: 1px solid var(--lightDark);
 }
 </style>
