@@ -201,7 +201,7 @@ export default {
     text-align: center;
     font-size: 32px;
     letter-spacing: 1px;
-    padding-top: 70px;
+    padding: 70px 70px 0 70px;
 }
 .catodo__sub {
     font-size: 26px;
@@ -220,6 +220,7 @@ export default {
 .catodo__notasks {
     text-align: center;
     font-size: 16px;
+    line-height: 30px;
 }
 .catodo__howtos {
     margin-bottom: 20px;
@@ -228,11 +229,15 @@ export default {
 }
 .catodo__howto {
     margin-right: 10px;
+    line-height: 25px;
 }
 .catodo--dark.catodo {
     background-color: var(--dark); 
     color: white;
     font-weight: 700;
+}
+.catodo--dark .catodo__info {
+    background-color: var(--lightDark);
 }
 
 @keyframes moveHead {
@@ -244,6 +249,24 @@ export default {
     }
     40% {
         transform: rotate(0);
+    }
+}
+
+@media (max-width: 576px) {
+    .catodo__items {
+        padding: 70px;
+    }
+
+    .catodo__howtos {
+        flex-direction: column;
+    }
+
+    .catodo__howto {
+        margin-top: 20px;
+    }
+
+    .catodo__howto:first-child {
+        margin-top: 0;
     }
 }
 </style>
