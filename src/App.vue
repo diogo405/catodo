@@ -187,10 +187,13 @@ export default {
     transition: background-color 300ms ease-out;
 }
 .catodo__info {
-    position: fixed;
-    top: 15px;
-    right: 15px;
+    position: absolute;
     font-size: 14px;
+    background: var(--lightBlue);
+    padding: 20px;
+    top: 0;
+    right: 0;
+    border-bottom-left-radius: var(--radius);
 }
 .catodo__title {
     font-family: var(--font);
