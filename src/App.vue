@@ -31,6 +31,12 @@
             ref="doneTask" 
             @update="update()"
         />
+        <TaskPopup 
+            :visible="visible.moveTopTaskPopup" 
+            label="Enter the task id to move to top: " 
+            ref="topTask" 
+            @update="update()"
+        />
         <div class="catodo__info">
             <span class="catodo__command">Ctrl+i</span> for instructions
         </div>
@@ -55,7 +61,8 @@ export default {
                 instructions: false,
                 newTaskPopup: false,
                 deleteTaskPopup: false,
-                markAsDonePopup: false
+                markAsDonePopup: false,
+                moveTopTaskPopup: false
             },
             darkMode: false
         }
@@ -112,6 +119,12 @@ export default {
                 EventBus.$emit('update-task', {action: 'DONE'})
             }
 
+            // Enter (move to top)
+            if (this.visible.moveTopTaskPopup && event.keyCode === 13) {
+                this.ctrlPressed = false
+                EventBus.$emit('update-task', {action: 'TOP'})
+            }
+
             // Esc (abort new task)
             if (this.visible.newTaskPopup && event.keyCode === 27) {
                 this.visible.newTaskPopup = false
@@ -128,6 +141,12 @@ export default {
             // Esc (abort mark as done task)
             if (this.visible.markAsDonePopup && event.keyCode === 27) {
                 this.visible.markAsDonePopup = false
+                this.$nextTick(() => { this.$refs.app.focus() })
+            }
+
+            // Esc (abort move to top)
+            if (this.visible.moveTopTaskPopup && event.keyCode === 27) {
+                this.visible.moveTopTaskPopup = false
                 this.$nextTick(() => { this.$refs.app.focus() })
             }
 
@@ -153,6 +172,14 @@ export default {
                 this.$nextTick(() => { this.$refs.doneTask.$refs.input.focus() })
             }
 
+            // Ctrl + t (move to top)
+            if (this.ctrlPressed && event.keyCode === 84 && this.tasks.length > 0) {
+                this.ctrlPressed = false
+                this.hidePopups()
+                this.visible.moveTopTaskPopup = true
+                this.$nextTick(() => { this.$refs.topTask.$refs.input.focus() })
+            }
+
             // Ctrl + m (toggle dark mode)
             if (this.ctrlPressed && event.keyCode === 77) {
                 this.ctrlPressed = false
@@ -164,6 +191,7 @@ export default {
             this.visible.newTaskPopup = false
             this.visible.deleteTaskPopup = false
             this.visible.markAsDonePopup = false
+            this.visible.moveTopTaskPopup = false
         },
         update() {
             this.hidePopups()
@@ -185,6 +213,7 @@ export default {
     background-color: white; 
     color: var(--dark);
     transition: background-color 300ms ease-out;
+    overflow: scroll;
 }
 .catodo__info {
     position: absolute;

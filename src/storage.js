@@ -34,6 +34,15 @@ class Storage {
 		localStorage.setItem('tasks', JSON.stringify(tasks))
 	}
 
+	static moveToTop(id) {
+		let taskToBeMoved = Storage.getTask(id)	
+		if (!taskToBeMoved) return
+		let tasks = Storage.getTasks()
+		tasks = tasks.filter(t => t.id.toUpperCase() !== id.toUpperCase())
+		tasks.unshift(taskToBeMoved)
+		localStorage.setItem('tasks', JSON.stringify(tasks))
+	}
+
 	static deleteAllTasks() {
 		localStorage.setItem('tasks', '[]')
         return []
