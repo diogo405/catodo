@@ -66,9 +66,10 @@ export default {
     padding: 20px;
     opacity: 0;
     transition: opacity 200ms ease-out;
+    background-color: white;
 }
 .dtask--visible {
-	opacity: 1;
+	opacity: 0.8;
 }
 .dtask__cont {
 	background-color: white;
