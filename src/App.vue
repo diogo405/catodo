@@ -18,6 +18,7 @@
             </div>
             <Task v-else v-for="task in tasks" :task="task" :key="task.text"/>
         </div>
+        <TaskPanel :tasks="tasks"/>
         <Instructions :visible="visible.instructions"/>
         <TaskPopup 
             :visible="visible.deleteTaskPopup" 
@@ -48,11 +49,12 @@ import {Storage} from '@/storage'
 import Task from '@/components/Task'
 import TaskPopup from '@/components/TaskPopup'
 import NewTask from '@/components/NewTask'
+import TaskPanel from '@/components/TaskPanel'
 import Instructions from '@/components/Instructions'
 import {EventBus} from '@/eventBus'
 export default {
     name: 'app',
-    components: {TaskPopup, NewTask, Task, Instructions},
+    components: {TaskPopup, NewTask, Task, Instructions, TaskPanel},
     data() {
         return {
             tasks: [],

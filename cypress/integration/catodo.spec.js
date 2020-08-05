@@ -29,6 +29,11 @@ context('Catodo', () => {
         cy.get('.catodo').type('{ctrl}N', {release: false})
         cy.get('.newt').should('be.visible').type(`${taskText}{Enter}`)
     })
+
+    it('Status', () => {
+        cy.get('.tpanel').should('be.visible')
+        cy.get('.tpanel__task').should('have.length', 2)
+    })
     
     /*
     it('Mark as done', () => {
@@ -46,5 +51,9 @@ context('Catodo', () => {
     it('Delete all tasks', () => {
         cy.get('.catodo').type('{ctrl}0', {release: false})
         cy.get('.task').should('not.exist')
+    })
+
+    it('Status update', () => {
+        cy.get('.tpanel__task').should('have.length', 0)
     })
 })
