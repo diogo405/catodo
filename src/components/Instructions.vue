@@ -3,7 +3,7 @@
         <h2 class="cins__title">📝 Instructions</h2>
         <p class="cins__subtitle">Here are all the commands you need to start managing your todo list.</p>
         <div class="cins__items">
-            <div v-for="instruction in instructions" :class="['cins__item', {'cins__item--section': instruction.space}]">
+            <div v-for="instruction in instructions" :class="['cins__item', {'cins__item--section': instruction.space}]" :key="instruction.label">
                 <div class="catodo__command-cont">
                     <span class="catodo__command catodo__command--small">{{instruction.cmd}}</span>
                 </div>
