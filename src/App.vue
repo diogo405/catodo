@@ -1,7 +1,26 @@
 <template>
     <div id="app" :class="['catodo', {'catodo--dark': darkMode}] " @keyup="keyUp" @keydown="keyDown" tabindex="0" ref="app">
         <h1 class="catodo__title">
-            catodo <span class="catodo__icon">😺</span> <span class="catodo__sub">A mouseless todo list</span>
+            catodo <span class="catodo__icon">😺</span> <span class="catodo__sub">
+                <span>A</span>
+                <span class="catodo__sub-space"> m</span>
+                <span>o</span>
+                <span>u</span>
+                <span>s</span>
+                <span>e</span>
+                <span>l</span>
+                <span>e</span>
+                <span>s</span>
+                <span>s</span>
+                <span class="catodo__sub-space"> t</span>
+                <span>o</span>                
+                <span>d</span>                
+                <span>o</span>
+                <span class="catodo__sub-space"> l</span>
+                <span>i</span>                
+                <span>s</span>                
+                <span>t</span>                
+            </span>
         </h1>
         <div class="catodo__items">
             <div class="catodo__howtos" v-if="tasks.length > 0">
@@ -52,6 +71,8 @@ import NewTask from '@/components/NewTask'
 import TaskPanel from '@/components/TaskPanel'
 import Instructions from '@/components/Instructions'
 import {EventBus} from '@/eventBus'
+import './assets/css/subtitle.css'
+
 export default {
     name: 'app',
     components: {TaskPopup, NewTask, Task, Instructions, TaskPanel},
@@ -233,12 +254,6 @@ export default {
     font-size: 32px;
     letter-spacing: 1px;
     padding: 70px 70px 0 70px;
-}
-.catodo__sub {
-    font-size: 26px;
-    font-weight: 100;
-    display: inline-block;
-    margin-left: 5px;
 }
 .catodo__icon {
     animation: moveHead 0.5s ease-out;
