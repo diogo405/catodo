@@ -35,7 +35,7 @@
             <div class="catodo__notasks" v-if="tasks.length === 0 && !visible.newTaskPopup">
                 No tasks yet. To create a task hit <span class="catodo__command">Ctrl+n</span>
             </div>
-            <Task v-else v-for="task in tasks" :task="task" :key="task.text"/>
+            <Task v-else v-for="task in tasks" :task="task" :key="task.id"/>
         </div>
         <TaskPanel :tasks="tasks"/>
         <Instructions :visible="visible.instructions"/>
