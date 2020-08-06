@@ -1,7 +1,26 @@
 <template>
     <div id="app" :class="['catodo', {'catodo--dark': darkMode}] " @keyup="keyUp" @keydown="keyDown" tabindex="0" ref="app">
         <h1 class="catodo__title">
-            catodo <span class="catodo__icon">😺</span> <span class="catodo__sub">A mouseless todo list</span>
+            catodo <span :class="catodoIconClass">{{catodoIcon}}</span> <span class="catodo__sub">
+                <span>A</span>
+                <span class="catodo__sub-space"> m</span>
+                <span>o</span>
+                <span>u</span>
+                <span>s</span>
+                <span>e</span>
+                <span>l</span>
+                <span>e</span>
+                <span>s</span>
+                <span>s</span>
+                <span class="catodo__sub-space"> t</span>
+                <span>o</span>                
+                <span>d</span>                
+                <span>o</span>
+                <span class="catodo__sub-space"> l</span>
+                <span>i</span>                
+                <span>s</span>                
+                <span>t</span>                
+            </span>
         </h1>
         <div class="catodo__items">
             <div class="catodo__howtos" v-if="tasks.length > 0">
@@ -16,7 +35,7 @@
             <div class="catodo__notasks" v-if="tasks.length === 0 && !visible.newTaskPopup">
                 No tasks yet. To create a task hit <span class="catodo__command">Ctrl+n</span>
             </div>
-            <Task v-else v-for="task in tasks" :task="task" :key="task.text"/>
+            <Task v-else v-for="task in tasks" :task="task" :key="task.id"/>
         </div>
         <TaskPanel :tasks="tasks"/>
         <Instructions :visible="visible.instructions"/>
@@ -52,6 +71,8 @@ import NewTask from '@/components/NewTask'
 import TaskPanel from '@/components/TaskPanel'
 import Instructions from '@/components/Instructions'
 import {EventBus} from '@/eventBus'
+import './assets/css/subtitle.css'
+
 export default {
     name: 'app',
     components: {TaskPopup, NewTask, Task, Instructions, TaskPanel},
@@ -67,6 +88,21 @@ export default {
                 moveTopTaskPopup: false
             },
             darkMode: false
+        }
+    },
+    computed: {
+        catodoIcon() {
+            if (this.visible.newTaskPopup) return '😻'
+            if (this.visible.deleteTaskPopup || this.visible.markAsDonePopup || this.visible.moveTopTaskPopup) return '😼'
+            return '😺'
+        },
+        catodoIconClass() {
+            return {
+              'catodo__icon': true,
+              'catodo__icon--newt': this.visible.newTaskPopup,
+              'catodo__icon--popup': this.visible.deleteTaskPopup || this.visible.markAsDonePopup || this.visible.moveTopTaskPopup,
+              'catodo__icon--dark': this.darkMode
+            }
         }
     },
     methods: {
@@ -234,16 +270,21 @@ export default {
     letter-spacing: 1px;
     padding: 70px 70px 0 70px;
 }
-.catodo__sub {
-    font-size: 26px;
-    font-weight: 100;
-    display: inline-block;
-    margin-left: 5px;
-}
 .catodo__icon {
     animation: moveHead 0.5s ease-out;
     animation-delay: 2s;
     display: inline-block;
+    transition: all 250ms ease;
+}
+.catodo__icon--newt {
+    transform: translateY(5px);
+}
+.catodo__icon--popup {
+    transform: translateY(-3px) rotate(9deg);
+}
+.catodo__icon--dark {
+    transition: all 400ms ease-out;
+    transform: rotate(180deg);
 }
 .catodo__items {
     padding: 100px;
