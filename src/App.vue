@@ -1,7 +1,7 @@
 <template>
     <div id="app" :class="['catodo', {'catodo--dark': darkMode}] " @keyup="keyUp" @keydown="keyDown" tabindex="0" ref="app">
         <h1 class="catodo__title">
-            catodo <span class="catodo__icon">😺</span> <span class="catodo__sub">
+            catodo <span :class="catodoIconClass">{{catodoIcon}}</span> <span class="catodo__sub">
                 <span>A</span>
                 <span class="catodo__sub-space"> m</span>
                 <span>o</span>
@@ -88,6 +88,21 @@ export default {
                 moveTopTaskPopup: false
             },
             darkMode: false
+        }
+    },
+    computed: {
+        catodoIcon() {
+            if (this.visible.newTaskPopup) return '😻'
+            if (this.visible.deleteTaskPopup || this.visible.markAsDonePopup || this.visible.moveTopTaskPopup) return '😼'
+            return '😺'
+        },
+        catodoIconClass() {
+            return {
+              'catodo__icon': true,
+              'catodo__icon--newt': this.visible.newTaskPopup,
+              'catodo__icon--popup': this.visible.deleteTaskPopup || this.visible.markAsDonePopup || this.visible.moveTopTaskPopup,
+              'catodo__icon--dark': this.darkMode
+            }
         }
     },
     methods: {
@@ -259,6 +274,17 @@ export default {
     animation: moveHead 0.5s ease-out;
     animation-delay: 2s;
     display: inline-block;
+    transition: all 250ms ease;
+}
+.catodo__icon--newt {
+    transform: translateY(5px);
+}
+.catodo__icon--popup {
+    transform: translateY(-3px) rotate(9deg);
+}
+.catodo__icon--dark {
+    transition: all 400ms ease-out;
+    transform: rotate(180deg);
 }
 .catodo__items {
     padding: 100px;
